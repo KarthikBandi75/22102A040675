@@ -41,7 +41,7 @@ This backend microservice provides APIs to interact with stock market data. It s
 
 ### 📊 Average Stock Price Response
 
-![Average Stock Price](./Stockpriceview.png) 
+![Average Stock Price](./Stockpriceview.jpg) 
 
 ---
 
