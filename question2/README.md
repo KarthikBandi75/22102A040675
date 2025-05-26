@@ -1,12 +1,59 @@
-# React + Vite
+# 🌐 Stock Market Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🧾 Overview
 
-Currently, two official plugins are available:
+This is a React.js frontend application that interfaces with a stock market backend microservice. It provides two core functionalities:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **📉 Stock Price View** – View average stock price over a given time period.
+2. **📊 Correlation Heatmap View** – Analyze the relationship between two stock tickers.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🖥️ Pages & Features
+
+### 🔹 1. Stock Price View
+
+* **User Inputs:**
+  * Stock Ticker (e.g., `NVDA`)
+  * Time Interval in Minutes (e.g., `30`)
+* **Features:**
+  * Fetches average stock price from backend
+  * Displays:
+    * Average stock price
+    * Historical price data (list or chart)
+
+---
+
+### 🔹 2. Correlation Heatmap View
+
+* **User Inputs:**
+  * Two Stock Tickers (e.g., `AAPL` and `GOOGL`)
+* **Features:**
+  * Fetches correlation data from backend
+  * Displays:
+    * Correlation coefficient
+    * Visual correlation heatmap or chart
+
+---
+
+## 🛠️ Technologies Used
+
+* **React.js** – Frontend framework using functional components and hooks
+* **Material UI** – UI library for styling and layout
+* **Axios** – For making API requests to backend
+
+---
+
+## 🖼️ Screenshots
+
+### 🔗 Heatmap Table
+
+![Heatmap View](./HeatMapTable.png)
+
+---
+
+## 📌 Notes
+
+* Make sure the backend service is running and accessible via the configured API URL.
+* Customize the UI with additional charts (e.g., line graphs or heatmaps) for better visualization.
+

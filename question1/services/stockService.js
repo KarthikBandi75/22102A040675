@@ -37,3 +37,16 @@ export async function fetchStockData(ticker, minutes) {
 
   return response.data.map((entry) => entry.price);
 }
+
+export async function fetchStockList() {
+  const token = await getAuthToken();
+
+  const url = `${process.env.BASE_URL}/stocks`;
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}
