@@ -40,12 +40,10 @@ Visualizes the correlation between different stock tickers.
 
 ### ✅ Question 1
 
-![Stock Price View](./Screenshot%202025-05-26%20133135.png)  
-![Stock Price View Table](./Screenshot%202025-05-26%20133156.png)
+![Stock Price View](./Stockpriceview.jpg)  
 
 ---
 
 ### ✅ Question 2
 
-![Correlation Heatmap](./Screenshot%202025-05-26%20131911.png)  
-![Heatmap Table](./Screenshot%202025-05-26%20131854.png)
+![Heatmap Table](./HeatMapTable.png)  
