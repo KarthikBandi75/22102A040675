@@ -31,7 +31,7 @@ export default function AverageStockPrice() {
     <Card variant="outlined">
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          🔍 Get Average Stock Price
+         Get Average Stock Price
         </Typography>
 
         <TextField

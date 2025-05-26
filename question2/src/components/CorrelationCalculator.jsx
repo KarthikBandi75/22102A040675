@@ -32,7 +32,7 @@ export default function CorrelationCalculator() {
     <Card variant="outlined">
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          📊 Calculate Stock Correlation
+          Calculate Stock Correlation
         </Typography>
 
         <TextField
