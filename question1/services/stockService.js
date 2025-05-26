@@ -1,41 +1,39 @@
 import axios from "axios";
-import { config } from "../config.js";
-import cache from "../utils/cache.js";
+import dotenv from "dotenv";
 
-let tokenCache = null;
+dotenv.config();
 
-export const getToken = async () => {
-  if (tokenCache && tokenCache.expires > Date.now()) {
-    return tokenCache.token;
-  }
+let accessToken = null;
 
-  const { data } = await axios.post(config.AUTH_URL, {
-    name: config.NAME,
-    rollNo: config.ROLL_NO,
-    clientID: config.CLIENT_ID,
-    clientSecret: config.CLIENT_SECRET,
-    accessCode: config.ACCESS_CODE,
+async function getAuthToken() {
+  if (accessToken) return accessToken;
+
+  const response = await axios.post(`${process.env.BASE_URL}/auth`, {
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    rollNo: process.env.ROLL_NO,
+    name: process.env.NAME,
+    accessCode: process.env.ACCESS_CODE,
+    email: process.env.EMAIL,
   });
-  console.log(data);
-  tokenCache = {
-    token: data.access_token,
-    expires: Date.now() + (data.expires_in * 1000) - 5000,
-  };
 
-  return tokenCache.token;
-};
+  accessToken = response.data.access_token;
+  console.log(accessToken);
+  console.log("Got access token");
+  return accessToken;
+}
 
-export const fetchStockPrices = async (ticker, minutes) => {
-  const cacheKey = `${ticker}-${minutes}`;
-  if (cache[cacheKey]) return cache[cacheKey];
+export async function fetchStockData(ticker, minutes) {
+  const token = await getAuthToken();
 
-  const token = await getToken();
-  const { data } = await axios.get(`${config.STOCK_API_URL}/${ticker}?minutes=${minutes}`, {
+  const url = `${process.env.BASE_URL}/stocks/${ticker}?minutes=${minutes}`;
+  const response = await axios.get(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  cache[cacheKey] = data;
-  return data;
-};
+  console.log(response.data);
+
+  return response.data.map((entry) => entry.price);
+}

@@ -1,12 +1,12 @@
 import express from "express";
 import {
-  getAverageStockPrice,
+  getAveragePriceOfStock,
   getStockCorrelation,
 } from "../controllers/stockController.js";
 
 const router = express.Router();
 
-router.get("/ticker", getAverageStockPrice);
+router.get("/ticker", getAveragePriceOfStock);
 router.get("/correlation", getStockCorrelation);
 
 export default router;

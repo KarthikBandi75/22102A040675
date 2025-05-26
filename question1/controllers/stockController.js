@@ -1,59 +1,40 @@
-import {
-  fetchStockPrices,
-  getToken,
-} from "../services/stockService.js";
-import {
-  calculateAverage,
-  calculateCorrelation,
-} from "../utils/calcUtils.js";
+import { fetchStockData } from "../services/stockService.js";
+import { calculateAverage, calculateCorrelation } from "../utils/calcUtils.js";
 
-export const getAverageStockPrice = async (req, res) => {
-  const { minutes, ticker } = req.query;
-  if (!minutes || !ticker)
-    return res.status(400).json({ error: "ticker and minutes are required" });
+export const getAveragePriceOfStock = async (req, res) => {
+  const { minutes, aggregation, ticker } = req.query;
+  if (aggregation !== "average")
+    return res.status(400).send({ error: "Invalid aggregation" });
 
   try {
-    const prices = await fetchStockPrices(ticker, minutes);
-    const averageStockPrice = calculateAverage(prices.map(p => p.price));
-
-    res.json({
-      ticker,
-      averageStockPrice,
-      priceHistory: prices,
-    });
+    const priceHistory = await fetchStockData(ticker, minutes);
+    const average = calculateAverage(priceHistory);
+    res.json({ ticker, averageStockPrice: average, priceHistory });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 };
 
 export const getStockCorrelation = async (req, res) => {
   const { minutes, ticker } = req.query;
-  if (!minutes || !ticker || ticker.length !== 2)
-    return res.status(400).json({ error: "Exactly 2 tickers are required" });
+  if (!ticker || ticker.length !== 2) {
+    return res.status(400).send({ error: "Provide exactly 2 tickers" });
+  }
 
   try {
-    const [ticker1, ticker2] = ticker;
+    const [dataX, dataY] = await Promise.all([
+      fetchStockData(ticker[0], minutes),
+      fetchStockData(ticker[1], minutes),
+    ]);
 
-    const prices1 = await fetchStockPrices(ticker1, minutes);
-    const prices2 = await fetchStockPrices(ticker2, minutes);
-
-    const timeAlignedPrices1 = prices1.map(p => p.price);
-    const timeAlignedPrices2 = prices2.map(p => p.price);
-
-    const correlation = calculateCorrelation(timeAlignedPrices1, timeAlignedPrices2);
-
+    const correlation = calculateCorrelation(dataX, dataY);
     res.json({
       correlation,
-      stock1: {
-        ticker: ticker1,
-        average: calculateAverage(timeAlignedPrices1),
-        priceHistory: prices1,
-      },
-      stock2: {
-        ticker: ticker2,
-        average: calculateAverage(timeAlignedPrices2),
-        priceHistory: prices2,
-      },
+      stocks: [
+        { ticker: ticker[0], priceHistory: dataX },
+        { ticker: ticker[1], priceHistory: dataY },
+      ],
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
