@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.get("/ticker", getAveragePriceOfStock);
-router.get("/correlation", getStockCorrelation);
+router.get("/ticker", AveragePriceOfStock);
+router.get("/correlation", StockCorrelation);
 
 export default router;
